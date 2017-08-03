@@ -10,6 +10,9 @@
 '''
 
 from splinter import Browser
+import atexit, datetime
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 
 class Person:
     def __init__(self, f, l, e):
@@ -76,4 +79,11 @@ def run(date):
 
 browser = Browser('chrome')
 
-run('2017-06-04')
+def run_date():
+    print 'hello'
+
+# Run program once a day
+scheduler = BackgroundScheduler()
+scheduler.start()
+scheduler.add_job(run_date, trigger=IntervalTrigger(hours=24), id='reserving_room', name='reserving a room', replace_existing=True)
+atextit.register(lambda: scheduler.shutdown())

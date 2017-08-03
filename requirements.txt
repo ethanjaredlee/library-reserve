@@ -1,0 +1,8 @@
+APScheduler==3.3.1
+funcsigs==1.0.2
+futures==3.1.1
+pytz==2017.2
+selenium==3.4.3
+six==1.10.0
+splinter==0.7.6
+tzlocal==1.4
