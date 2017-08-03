@@ -81,7 +81,10 @@ def run(date):
 browser = Browser('chrome')
 
 def run_date():
-    print 'hello'
+    today = datetime.date.today()
+    days_in_advance = datetime.timedelta(days=20)
+    date_to_reserve = str(today + days_in_advance)
+    run(date_to_reserve)
 
 # scheduler = BackgroundScheduler()
 # # Run program once a day
@@ -90,6 +93,6 @@ def run_date():
 #     scheduler.add_job(run_date, trigger=IntervalTrigger(seconds=3), id='reserving_room', name='reserving a room', replace_existing=True)
 #     atexit.register(lambda: scheduler.shutdown())
 
-sched = BlockingScheduler()
-sched.add_job(run_date, 'interval', hours=24)
-sched.start()
+# sched = BlockingScheduler()
+# sched.add_job(run_date, 'interval', hours=24)
+# sched.start()
