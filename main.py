@@ -10,10 +10,7 @@
 '''
 
 from splinter import Browser
-import atexit, datetime
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.interval import IntervalTrigger
-from apscheduler.schedulers.blocking import BlockingScheduler
+import datetime
 
 class Person:
     def __init__(self, f, l, e):
@@ -85,6 +82,7 @@ def run_date():
     days_in_advance = datetime.timedelta(days=20)
     date_to_reserve = str(today + days_in_advance)
     run(date_to_reserve)
+
 
 # scheduler = BackgroundScheduler()
 # # Run program once a day
