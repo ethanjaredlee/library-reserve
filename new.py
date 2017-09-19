@@ -5,7 +5,6 @@ import datetime
 from settings import ROOM_RESERVERS
 import ipdb
 
-# browser = Browser('chrome', headless=True)
 
 mudd = 'http://northwestern.libcal.com/rooms_acc.php?gid=15697'
 main = 'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
@@ -23,9 +22,15 @@ def run_soup(html):
         return
     relevant = relevant[0]
     boxes = relevant.parent.parent.find_all('div')[1:]
-    print len(boxes)
+    boxIDs = [box.input['id'] for box in boxes]
+    return boxIDs
 
-run_soup(content[0])
+if __name__ == "__main__":
+    browser = Browser('chrome')
+    browser.visit(mudd)
+    muddIDs = run_soup(content[0])
+    browser.find_by_css('#' + muddIDs[0]).click()
+
 
 # def enter_date(date):
 #     # date is a string in format 'yyyy-mm-dd'
