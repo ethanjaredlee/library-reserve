@@ -5,7 +5,7 @@ import datetime
 from settings import ROOM_RESERVERS
 import ipdb
 
-# browser = Browser('chrome', headless=True)
+browser = Browser('chrome', headless=True)
 
 mudd = 'http://northwestern.libcal.com/rooms_acc.php?gid=15697'
 main = 'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
