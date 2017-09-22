@@ -17,3 +17,6 @@ Currently can't specify which library room you would like to reserve due to crud
 ## Future Development
 * Specify which room to reserve
 * Send an email or notification if reservation process of the room fails
+
+## Using this program
+Create a settings.py file and create a list of Person objects called ROOM_RESERVERS whose names will be used to reserve library rooms
