@@ -1,10 +1,7 @@
-from splinter import Browser
+from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
-import datetime
 from settings import ROOM_RESERVERS
-import ipdb
-
 
 mudd = 'http://northwestern.libcal.com/rooms_acc.php?gid=15697'
 main = 'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
@@ -32,31 +29,40 @@ def run_on_dates(dates, library):
     '''
     extendedURLs = []
     for date in dates:
-        url = library + '%d={}&cap=0'.format(date)
+        url = library + '&d={}&cap=0'.format(date)
         extendedURLs.append(url)
-
-def submit_form(person):
-    browser.fill('fname', person.fname)
-    browser.fill('lname', person.lname)
-    browser.fill('email', person.email)
-    browser.select('q1', 'Undergraduate student')
-    browser.find_by_id('s-lc-rm-ac-but').click()
+    return extendedURLs
 
 if __name__ == "__main__":
-    browser = Browser('chrome')
-    browser.visit(mudd)
-    muddIDs = run_soup(content[0])
-    # if content size != to 48, then alert me
+    # driver = webdriver.Chrome()
+    x = run_on_dates(['2017-09-26'], mudd)
+    print x
+    print len(run_soup(requests.get(x[0]).content))
 
-    for person in ROOM_RESERVERS:
-        counter = 0
-        while len(muddIDs) != 0:
-            checkbox = muddIDs.pop(0)
-            browser.find_by_css('#' + checkbox).click()
-            counter += 1
-            if counter == 6:
-                break
-        submit_form(person)
+
+
+# def submit_form(person):
+#     browser.fill('fname', person.fname)
+#     browser.fill('lname', person.lname)
+#     browser.fill('email', person.email)
+#     browser.select('q1', 'Undergraduate student')
+#     browser.find_by_id('s-lc-rm-ac-but').click()
+
+# if __name__ == "__main__":
+#     browser = Browser('chrome')
+#     browser.visit(mudd)
+#     muddIDs = run_soup(content[0])
+#     # if content size != to 48, then alert me
+
+#     for person in ROOM_RESERVERS:
+#         counter = 0
+#         while len(muddIDs) != 0:
+#             checkbox = muddIDs.pop(0)
+#             browser.find_by_css('#' + checkbox).click()
+#             counter += 1
+#             if counter == 6:
+#                 break
+#         submit_form(person)
 
 
 
