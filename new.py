@@ -34,10 +34,10 @@ def run_on_dates(dates, library):
     return extendedURLs
 
 if __name__ == "__main__":
-    # driver = webdriver.Chrome()
-    x = run_on_dates(['2017-09-26'], mudd)
-    print x
-    print len(run_soup(requests.get(x[0]).content))
+    driver = webdriver.Chrome()
+    dates = run_on_dates(['2017-09-30'], mudd)
+    for date in dates:
+        boxIDs = run_soup(requests.get(date))
 
 
 
@@ -119,6 +119,3 @@ if __name__ == "__main__":
 #     days_in_advance = datetime.timedelta(days=20)
 #     date_to_reserve = str(today + days_in_advance)
 #     run(date_to_reserve)
-
-# run_date()
-
