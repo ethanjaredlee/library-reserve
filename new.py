@@ -35,9 +35,10 @@ def run_on_dates(dates, library):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    dates = run_on_dates(['2017-09-30'], mudd)
+    dates = run_on_dates(['2017-10-02'], mudd)
     for date in dates:
-        boxIDs = run_soup(requests.get(date))
+        print date
+        boxIDs = run_soup(requests.get(date).text)
 
 
 
