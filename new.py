@@ -2,6 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
 from settings import ROOM_RESERVERS
+import ipdb
 
 mudd = 'http://northwestern.libcal.com/rooms_acc.php?gid=15697'
 main = 'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
@@ -33,21 +34,39 @@ def run_on_dates(dates, library):
         extendedURLs.append(url)
     return extendedURLs
 
+def click_box(driver, boxID):
+    checkbox = driver.find_element_by_id(boxID)
+    driver.execute_script("arguments[0].scrollIntoView();", checkbox)
+    checkbox.click()
+
+def scroll_and_fill(name, text):
+    element = driver.find_element_by_name(name)
+    driver.execute_script("arguments[0].scrollIntoView();", element)
+    element.send_keys(text)
+
+def submit_data(reserver, driver):
+    scroll_and_fill('fname', reserver.fname)
+    scroll_and_fill('lname', reserver.lname)
+    scroll_and_fill('email', reserver.email)
+    scroll_and_fill('q1', '5')
+    # submit = driver.find_element_by_id("s-lc-rm-ac-but")
+    # submit.click()
+
 if __name__ == "__main__":
     driver = webdriver.Chrome()
     dates = run_on_dates(['2017-10-05'], mudd)
     for date in dates:
-        driver.get(date)
         boxIDs = run_soup(requests.get(date).text)
-        count = 0
-        for box in boxIDs:
-            print box
-            count += 1
-            if count == 6:
-                break
-            checkbox = driver.find_element_by_id(box)
-            driver.execute_script("arguments[0].scrollIntoView();", checkbox)
-            checkbox.click()
+        for person in ROOM_RESERVERS:
+            driver.get(date)
+
+            timeslots = boxIDs[:6]
+            del boxIDs[:6]
+
+            for checkbox in timeslots:
+                click_box(driver, checkbox)
+            submit_data(person, driver)
+            break
 
 
 
