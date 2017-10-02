@@ -35,10 +35,20 @@ def run_on_dates(dates, library):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    dates = run_on_dates(['2017-10-02'], mudd)
+    dates = run_on_dates(['2017-10-05'], mudd)
     for date in dates:
-        print date
+        driver.get(date)
         boxIDs = run_soup(requests.get(date).text)
+        count = 0
+        for box in boxIDs:
+            print box
+            count += 1
+            if count == 6:
+                break
+            checkbox = driver.find_element_by_id(box)
+            driver.execute_script("arguments[0].scrollIntoView();", checkbox)
+            checkbox.click()
+
 
 
 
