@@ -2,7 +2,6 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
 from settings import ROOM_RESERVERS
-import ipdb
 
 mudd = 'http://northwestern.libcal.com/rooms_acc.php?gid=15697'
 main = 'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
@@ -44,13 +43,23 @@ def scroll_and_fill(name, text):
     driver.execute_script("arguments[0].scrollIntoView();", element)
     element.send_keys(text)
 
-def submit_data(reserver, driver):
+def submit_data_mudd(reserver, driver):
     scroll_and_fill('fname', reserver.fname)
     scroll_and_fill('lname', reserver.lname)
     scroll_and_fill('email', reserver.email)
     scroll_and_fill('q1', '5')
-    # submit = driver.find_element_by_id("s-lc-rm-ac-but")
-    # submit.click()
+    submit = driver.find_element_by_id("s-lc-rm-ac-but")
+    submit.click()
+
+def submit_data_main(reserver, driver):
+    scroll_and_fill('fname', reserver.fname)
+    scroll_and_fill('lname', reserver.lname)
+    scroll_and_fill('email', reserver.email)
+    scroll_and_fill('nick', 'studious scholars')
+    scroll_and_fill('q1', '5')
+    submit = driver.find_element_by_id("s-lc-rm-ac-but")
+    submit.click()
+
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
@@ -65,8 +74,7 @@ if __name__ == "__main__":
 
             for checkbox in timeslots:
                 click_box(driver, checkbox)
-            submit_data(person, driver)
-            break
+            submit_data_mudd(person, driver)
 
 
 
