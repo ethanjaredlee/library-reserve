@@ -3,12 +3,11 @@ from bs4 import BeautifulSoup
 import requests
 from settings import ROOM_RESERVERS
 
-mudd = 'http://northwestern.libcal.com/rooms_acc.php?gid=15697'
-main = 'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
+librarySite = {
+        'mudd':'http://northwestern.libcal.com/rooms_acc.php?gid=15697',
+        'main':'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
+        }
 
-libraries = [mudd, main]
-
-content = [requests.get(library).content for library in  libraries]
 
 def run_soup(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -27,10 +26,10 @@ def run_on_dates(dates, library):
     takes a list of dates and returns a list of urls to navigate to
     date should be formatted as YYYY-MM-DD
     '''
-    extendedURLs = []
+    extendedURLs = {}
     for date in dates:
-        url = library + '&d={}&cap=0'.format(date)
-        extendedURLs.append(url)
+        url = librarySite[library] + '&d={}&cap=0'.format(date)
+        extendedURLs[url] = library
     return extendedURLs
 
 def click_box(driver, boxID):
@@ -63,8 +62,8 @@ def submit_data_main(reserver, driver):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    dates = run_on_dates(['2017-10-05'], mudd)
-    for date in dates:
+    dates = run_on_dates(['2017-10-16'], 'mudd')
+    for date in dates.keys():
         boxIDs = run_soup(requests.get(date).text)
         for person in ROOM_RESERVERS:
             driver.get(date)
@@ -74,7 +73,12 @@ if __name__ == "__main__":
 
             for checkbox in timeslots:
                 click_box(driver, checkbox)
-            submit_data_mudd(person, driver)
+            if dates[date] == 'mudd':
+                submit_data_mudd(person, driver)
+            if dates[date] == 'main':
+                submit_data_main(person, driver)
+            break
+        break
 
 
 

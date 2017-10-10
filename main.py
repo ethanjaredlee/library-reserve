@@ -73,7 +73,7 @@ def run(date):
     browser.visit('http://northwestern.libcal.com/rooms_acc.php?gid=12753')
     enter_date(date)
     submitting_times_last_person(connor)
-    browser.find_by_id('s-lc-rm-ac-but').click()
+    # browser.find_by_id('s-lc-rm-ac-but').click()
 
 browser = Browser('chrome')
 
@@ -83,6 +83,7 @@ def run_date():
     date_to_reserve = str(today + days_in_advance)
     run(date_to_reserve)
 
+run_date()
 
 # scheduler = BackgroundScheduler()
 # # Run program once a day
