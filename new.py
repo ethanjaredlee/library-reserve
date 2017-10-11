@@ -8,11 +8,15 @@ librarySite = {
         'main':'http://northwestern.libcal.com/rooms_acc.php?gid=12753'
         }
 
+MUDD_ROOM = '2174'
+MAIN_ROOM = '5746'
 
-def run_soup(html):
+
+def run_soup(html, room):
+    #TODO run this for both main and mudd
     soup = BeautifulSoup(html, 'html.parser')
     h2 = soup.find_all('h2')
-    relevant = [h for h in h2 if '2174' in h.text]
+    relevant = [h for h in h2 if room in h.text]
     if len(relevant) != 1:
         print 'something went wrong'
         return
@@ -62,9 +66,13 @@ def submit_data_main(reserver, driver):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    dates = run_on_dates(['2017-10-16'], 'mudd')
+    dates = run_on_dates(['2017-10-18'], 'main')
+    # dates.append(run_on_dates(['2017-10-17'], 'mudd'))
     for date in dates.keys():
-        boxIDs = run_soup(requests.get(date).text)
+        if dates[date] == 'mudd':
+            boxIDs = run_soup(requests.get(date).text, MUDD_ROOM)
+        if dates[date] == 'main':
+            boxIDs = run_soup(requests.get(date).text, MAIN_ROOM)
         for person in ROOM_RESERVERS:
             driver.get(date)
 
